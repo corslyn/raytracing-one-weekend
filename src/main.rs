@@ -1,4 +1,4 @@
-use cgmath::InnerSpace;
+use cgmath::{InnerSpace, Point3};
 use log::info;
 
 use crate::color::Color;
@@ -7,6 +7,24 @@ mod color;
 mod ray;
 
 fn ray_color(ray: &ray::Ray) -> Color {
+    if hit_sphere(
+        Point3 {
+            x: 0.0,
+            y: 0.0,
+            z: -1.0,
+        },
+        0.5,
+        ray,
+    ) {
+        return Color {
+            color: cgmath::Vector3 {
+                x: 1.0,
+                y: 0.0,
+                z: 0.0,
+            },
+        };
+    }
+
     let unit_direction = ray::direction(ray).normalize();
     let a = 0.5 * (unit_direction.y + 1.0);
     let c = (1.0 - a)
@@ -21,6 +39,15 @@ fn ray_color(ray: &ray::Ray) -> Color {
             z: 1.0,
         };
     Color { color: c }
+}
+
+fn hit_sphere(center: cgmath::Point3<f32>, radius: f32, ray: &ray::Ray) -> bool {
+    let oc = center - ray::origin(ray);
+    let a = ray::direction(ray).dot(ray::direction(ray));
+    let b = -2.0 * oc.dot(ray::direction(ray));
+    let c = oc.dot(oc) - radius * radius;
+    let discriminant = b * b - 4.0 * a * c;
+    discriminant > 0.0
 }
 
 fn main() {
