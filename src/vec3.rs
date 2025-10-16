@@ -5,13 +5,13 @@ pub struct Vec3 {
 }
 
 impl Vec3 {
-    fn x(&self) -> f64 {
+    pub fn x(&self) -> f64 {
         self.x
     }
-    fn y(&self) -> f64 {
+    pub fn y(&self) -> f64 {
         self.y
     }
-    fn z(&self) -> f64 {
+    pub fn z(&self) -> f64 {
         self.z
     }
 
@@ -19,10 +19,10 @@ impl Vec3 {
         self.x * self.x + self.y * self.y + self.z * self.z
     }
 
-    fn length(&self) -> f64 {
+    pub fn length(&self) -> f64 {
         self.length_squared().sqrt()
     }
-    fn new(x: f64, y: f64, z: f64) -> Vec3 {
+    pub fn new(x: f64, y: f64, z: f64) -> Vec3 {
         Vec3 { x, y, z }
     }
 }
