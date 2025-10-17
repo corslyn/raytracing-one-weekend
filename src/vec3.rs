@@ -1,4 +1,7 @@
-use std::ops::{AddAssign, DivAssign, MulAssign};
+use std::{
+    fmt::Display,
+    ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Shl},
+};
 
 pub struct Vec3 {
     x: f64,
@@ -30,7 +33,7 @@ impl Vec3 {
     }
 }
 
-impl std::ops::Div<f64> for Vec3 {
+impl Div<f64> for Vec3 {
     type Output = Vec3;
 
     fn div(self, rhs: f64) -> Vec3 {
@@ -38,11 +41,31 @@ impl std::ops::Div<f64> for Vec3 {
     }
 }
 
-impl std::ops::Neg for Vec3 {
+impl Neg for Vec3 {
     type Output = Vec3;
 
     fn neg(self) -> Self::Output {
         Vec3::new(-self.x, -self.y, -self.z)
+    }
+}
+
+impl Add for Vec3 {
+    type Output = Vec3;
+    fn add(self, v: Self) -> Self::Output {
+        Vec3::new(self.x + v.x, self.y + v.y, self.z + v.z)
+    }
+}
+
+impl Mul for Vec3 {
+    type Output = Vec3;
+    fn mul(self, v: Self) -> Self::Output {
+        Vec3::new(self.x * v.x, self.y * v.y, self.z * v.z)
+    }
+}
+
+impl Display for Vec3 {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{} {} {}", self.x as i32, self.y as i32, self.z as i32)
     }
 }
 
