@@ -1,32 +1,27 @@
+use std::f64::INFINITY;
+use std::sync::Arc;
+
 use crate::color::*;
+use crate::hittable::*;
+use crate::hittable_list::*;
 use crate::ray::*;
+use crate::rtweekend::*;
+use crate::sphere::*;
 use crate::vec3::*;
 
 mod color;
+mod hittable;
+mod hittable_list;
 mod ray;
+mod rtweekend;
+mod sphere;
 mod vec3;
 
-fn hit_sphere(center: Point3, radius: f64, r: Ray) -> f64 {
-    let oc = center - r.origin();
-    let a = dot(r.direction(), r.direction());
-    let b = -2.0 * dot(r.direction(), oc);
-    let c = dot(oc, oc) - radius * radius;
+fn ray_color(r: Ray, world: &HittableList) -> Color {
+    let mut rec = HitRecord::default();
 
-    let discriminant = b * b - 4.0 * a * c;
-
-    if discriminant < 0.0 {
-        -1.0
-    } else {
-        (-b - discriminant.sqrt()) / (2.0 * a)
-    }
-}
-
-fn ray_color(r: Ray) -> Color {
-    let t = hit_sphere(Point3::new(0.0, 0.0, -1.0), 0.5, r);
-
-    if t > 0.0 {
-        let normal = unit_vector(r.at(t) - Vec3::new(0.0, 0.0, -1.0));
-        return 0.5 * Color::new(normal.x() + 1.0, normal.y() + 1.0, normal.z() + 1.0);
+    if world.hit(r, 0.0, INFINITY, &mut rec) {
+        return 0.5 * (rec.normal + Color::new(1.0, 1.0, 1.0));
     }
 
     let unit_direction = unit_vector(r.direction());
@@ -42,6 +37,10 @@ fn main() {
     let image_height = if image_height < 1 { 1 } else { image_height };
 
     // Camera
+
+    let mut world: HittableList = HittableList::new();
+    world.add(Arc::new(Sphere::new(Point3::new(0.0, 0.0, -1.0), 0.5)));
+    world.add(Arc::new(Sphere::new(Point3::new(0.0, -100.5, -1.0), 100.0)));
 
     let focal_length = 1.0;
     let viewport_height = 2.0;
@@ -68,7 +67,7 @@ fn main() {
             let ray_direction = pixel_center - camera_center;
             let r = Ray::new(camera_center, ray_direction);
 
-            let pixel_color: Color = ray_color(r);
+            let pixel_color: Color = ray_color(r, &world);
             write_color(pixel_color);
         }
     }
