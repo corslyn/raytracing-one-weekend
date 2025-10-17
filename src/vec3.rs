@@ -1,6 +1,6 @@
 use std::{
     fmt::Display,
-    ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg},
+    ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub},
 };
 
 #[derive(Debug, Clone, Copy)]
@@ -48,6 +48,14 @@ impl Neg for Vec3 {
 
     fn neg(self) -> Self::Output {
         Vec3::new(-self.x, -self.y, -self.z)
+    }
+}
+
+impl Sub for Vec3 {
+    type Output = Vec3;
+
+    fn sub(self, v: Self) -> Self::Output {
+        Vec3::new(self.x - v.x, self.y - v.y, self.z - v.z)
     }
 }
 
