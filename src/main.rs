@@ -2,6 +2,7 @@ use crate::color::*;
 use crate::vec3::*;
 
 mod color;
+mod ray;
 mod vec3;
 
 fn main() {
