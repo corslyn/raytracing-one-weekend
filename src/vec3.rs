@@ -65,7 +65,7 @@ impl Mul for Vec3 {
 
 impl Display for Vec3 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{} {} {}", self.x as i32, self.y as i32, self.z as i32)
+        write!(f, "{} {} {}", self.x as i64, self.y as i64, self.z as i64)
     }
 }
 
