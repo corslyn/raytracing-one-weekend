@@ -1,8 +1,11 @@
+use std::ops::{AddAssign, DivAssign, MulAssign};
+
 pub struct Vec3 {
     x: f64,
     y: f64,
     z: f64,
 }
+pub type Color = Vec3;
 
 impl Vec3 {
     pub fn x(&self) -> f64 {
@@ -32,6 +35,36 @@ impl std::ops::Div<f64> for Vec3 {
 
     fn div(self, rhs: f64) -> Vec3 {
         Vec3::new(self.x / rhs, self.y / rhs, self.z / rhs)
+    }
+}
+
+impl std::ops::Neg for Vec3 {
+    type Output = Vec3;
+
+    fn neg(self) -> Self::Output {
+        Vec3::new(-self.x, -self.y, -self.z)
+    }
+}
+
+impl AddAssign for Vec3 {
+    fn add_assign(&mut self, v: Self) {
+        self.x += v.x;
+        self.y += v.y;
+        self.z += v.z;
+    }
+}
+
+impl MulAssign<f64> for Vec3 {
+    fn mul_assign(&mut self, t: f64) {
+        self.x *= t;
+        self.y *= t;
+        self.z *= t;
+    }
+}
+
+impl DivAssign<f64> for Vec3 {
+    fn div_assign(&mut self, t: f64) {
+        *self *= 1.0 / t;
     }
 }
 

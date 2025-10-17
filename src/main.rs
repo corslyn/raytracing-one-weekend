@@ -1,4 +1,5 @@
 use crate::color::*;
+use crate::vec3::*;
 
 mod color;
 mod vec3;
@@ -11,7 +12,7 @@ fn main() {
     for j in 0..image_height {
         eprintln!("Scanlines remaining : {} ", (image_height - j));
         for i in 0..image_width {
-            let pixel_color = vec3::Vec3::new(
+            let pixel_color = Color::new(
                 i as f64 / (image_width - 1) as f64,
                 j as f64 / (image_height - 1) as f64,
                 0.0,

@@ -1,4 +1,4 @@
-use crate::vec3::Vec3 as Color;
+use crate::vec3::Color;
 
 pub fn write_color(pixel_color: Color) {
     let ir = (255.999 * pixel_color.x()) as i64;
