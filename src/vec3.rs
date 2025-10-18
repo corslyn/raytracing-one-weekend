@@ -47,6 +47,10 @@ impl Vec3 {
             random_double_range(min, max),
         )
     }
+    pub fn near_zero(&self) -> bool {
+        let s = 1e-8;
+        self.x.abs() < s && self.y < s && self.z < s
+    }
 }
 impl Div<f64> for Vec3 {
     type Output = Vec3;
@@ -160,4 +164,8 @@ pub fn random_on_hemisphere(normal: Vec3) -> Vec3 {
     } else {
         -on_unit_sphere
     }
+}
+
+pub fn reflect(v: Vec3, n: Vec3) -> Vec3 {
+    v - 2.0 * dot(v, n) * n
 }
