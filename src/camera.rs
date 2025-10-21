@@ -1,8 +1,13 @@
 use std::f64::INFINITY;
 
 use crate::{
-    color::write_color, hittable::*, hittable_list::HittableList, interval::Interval, ray::Ray,
-    rtweekend::random_double, vec3::*,
+    color::write_color,
+    hittable::*,
+    hittable_list::HittableList,
+    interval::Interval,
+    ray::Ray,
+    rtweekend::{degrees_to_radians, random_double},
+    vec3::*,
 };
 
 pub struct Camera {
@@ -10,6 +15,7 @@ pub struct Camera {
     pub image_width: i32,
     pub samples_per_pixel: i32,
     pub max_depth: i32,
+    pub fov: f64,
     image_height: i32,
     center: Point3,
     pixel00_loc: Point3,
@@ -34,6 +40,7 @@ impl Camera {
             pixel_samples_scale: 0.0,
             samples_per_pixel: 10,
             max_depth: 10,
+            fov: 90.0,
         }
     }
 
@@ -89,9 +96,12 @@ impl Camera {
         self.pixel_samples_scale = 1.0 / self.samples_per_pixel as f64;
 
         self.center = Point3::new(0.0, 0.0, 0.0);
-        let focal_length = 1.0;
 
-        let viewport_height = 2.0;
+        let focal_length = 1.0;
+        let theta = degrees_to_radians(self.fov);
+        let h = (theta / 2.0).tan();
+
+        let viewport_height = 2.0 * h * focal_length;
         let viewport_width = viewport_height * (self.image_width as f64 / self.image_height as f64);
         self.center = Point3::new(0.0, 0.0, 0.0);
 
